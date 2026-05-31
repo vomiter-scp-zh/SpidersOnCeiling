@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.vomiter.spidersonceiling.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "SpiderMixin"
+  ],
+  "client": [
+    "client.SpiderRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "spidersonceiling.mixins.refmap.json"
+}
