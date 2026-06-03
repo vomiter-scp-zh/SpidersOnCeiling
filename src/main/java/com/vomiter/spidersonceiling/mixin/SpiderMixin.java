@@ -14,7 +14,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ForgeMod;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,7 +25,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.ArrayList;
 
 import static com.vomiter.spidersonceiling.SpidersOnCeiling.SPIDER_ON_CEILING_GRAVITY_MODIFIER;
-import static com.vomiter.spidersonceiling.SpidersOnCeiling.SPIDER_ON_CEILING_GRAVITY_MODIFIER_UUID;
 
 @Mixin(Spider.class)
 public abstract class SpiderMixin extends Monster implements ISpiderStateDuck {
@@ -41,19 +40,6 @@ public abstract class SpiderMixin extends Monster implements ISpiderStateDuck {
     public void soc$setState(SpiderState state){
         this.state = state;
     };
-
-
-    @Inject(method = "tick", at = @At("TAIL"))
-    private void soc$modifyGravity(CallbackInfo ci){
-        AttributeInstance gravityInstance = this.getAttribute(ForgeMod.ENTITY_GRAVITY.get());
-        assert gravityInstance != null;
-        if(soc$getState().equals(SpiderState.CEILING)){
-            if (gravityInstance.getModifier(SPIDER_ON_CEILING_GRAVITY_MODIFIER_UUID) == null)
-                gravityInstance.addTransientModifier(SPIDER_ON_CEILING_GRAVITY_MODIFIER);
-        } else if (gravityInstance.getModifier(SPIDER_ON_CEILING_GRAVITY_MODIFIER_UUID) != null){
-            gravityInstance.removeModifier(SPIDER_ON_CEILING_GRAVITY_MODIFIER_UUID);
-        }
-    }
 
     @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/monster/Spider;setClimbing(Z)V"))
     private void soc$modifyClimbing(Spider instance, boolean b, Operation<Void> original){
@@ -90,18 +76,5 @@ public abstract class SpiderMixin extends Monster implements ISpiderStateDuck {
         if (soc$getState().equals(SpiderState.CEILING) && !SpidersOnCeilingUtils.canChangeToCeilingMode(this)){
             soc$setState(SpiderState.VANILLA);
         }
-    }
-
-    @Inject(
-            method = "getPassengersRidingOffset",
-            at = @At("HEAD"),
-            cancellable = true
-    )
-    private void soc$positionCeilingSkeletonRider(
-            CallbackInfoReturnable<Double> cir
-    ) {
-        if(!SpidersOnCeilingUtils.canChangeToCeilingMode(this)) return;
-        Entity entity = getFirstPassenger();
-        if(entity != null) cir.setReturnValue(entity.getBbHeight() * -0.5);
     }
 }

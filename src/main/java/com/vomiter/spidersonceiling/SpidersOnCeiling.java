@@ -2,14 +2,13 @@ package com.vomiter.spidersonceiling;
 
 import com.mojang.logging.LogUtils;
 import com.vomiter.spidersonceiling.common.event.EventHandler;
-import com.vomiter.spidersonceiling.data.ModDataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.slf4j.Logger;
 
 import java.util.UUID;
@@ -21,15 +20,14 @@ public class SpidersOnCeiling
     public static final String MOD_ID = "spidersonceiling";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final UUID SPIDER_ON_CEILING_GRAVITY_MODIFIER_UUID
-            = UUID.fromString("800e821d-6744-4539-926a-f5e886dc0ca0");
+    public static final ResourceLocation SPIDER_ON_CEILING_GRAVITY_MODIFIER_ID
+            = modLoc("spider_on_ceiling_gravity_mod");
 
     public static AttributeModifier SPIDER_ON_CEILING_GRAVITY_MODIFIER
             = new AttributeModifier(
-            SPIDER_ON_CEILING_GRAVITY_MODIFIER_UUID,
-            "spider_on_ceiling_gravity_mod",
+                    SPIDER_ON_CEILING_GRAVITY_MODIFIER_ID,
             -0.16,
-            AttributeModifier.Operation.ADDITION
+            AttributeModifier.Operation.ADD_VALUE
     );
 
 
@@ -37,12 +35,10 @@ public class SpidersOnCeiling
         return Helpers.id(SpidersOnCeiling.MOD_ID, path);
     }
 
-    public SpidersOnCeiling(FMLJavaModLoadingContext context) {
+    public SpidersOnCeiling(ModContainer mod, IEventBus modBus) {
         EventHandler.init();
-        IEventBus modBus = context.getModEventBus();
         modBus.addListener(this::commonSetup);
-        modBus.addListener(ModDataGenerator::generateData);
-        context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        mod.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
