@@ -87,6 +87,9 @@ public abstract class SpiderMixin extends Monster implements ISpiderStateDuck {
         if (soc$getState().equals(SpiderState.FALL) && this.onGround()){
             soc$setState(SpiderState.VANILLA);
         }
+        if (soc$getState().equals(SpiderState.CEILING) && !SpidersOnCeilingUtils.canChangeToCeilingMode(this)){
+            soc$setState(SpiderState.VANILLA);
+        }
     }
 
     @Inject(

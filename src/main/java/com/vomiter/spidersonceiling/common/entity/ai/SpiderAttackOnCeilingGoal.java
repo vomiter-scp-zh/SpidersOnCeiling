@@ -17,7 +17,7 @@ public class SpiderAttackOnCeilingGoal extends Goal {
     private final double speed;
     private int repathCooldown;
     private int failureCount;
-    private final int failureCountMax = 40;
+    private final int failureCountMax = 5;
 
     public SpiderAttackOnCeilingGoal(Spider spider, double speed) {
         this.spider = spider;
@@ -77,7 +77,7 @@ public class SpiderAttackOnCeilingGoal extends Goal {
                         ceiling.getX() + 0.5D,
                         ceiling.getY() - spider.getBbHeight() + 0.05D,
                         ceiling.getZ() + 0.5D,
-                        speed
+                        speed * 1.5
                 );
             } else {
                 ++ failureCount;
