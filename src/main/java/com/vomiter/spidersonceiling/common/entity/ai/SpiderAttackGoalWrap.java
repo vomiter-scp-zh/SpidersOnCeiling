@@ -1,7 +1,6 @@
 package com.vomiter.spidersonceiling.common.entity.ai;
 
 import com.vomiter.neurolib.common.entity.generic.MutatedMeleeGoal;
-import com.vomiter.spidersonceiling.SpidersOnCeiling;
 import com.vomiter.spidersonceiling.common.SpidersOnCeilingUtils;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 

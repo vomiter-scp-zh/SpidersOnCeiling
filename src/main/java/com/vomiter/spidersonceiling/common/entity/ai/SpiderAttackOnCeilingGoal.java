@@ -1,6 +1,5 @@
 package com.vomiter.spidersonceiling.common.entity.ai;
 
-import com.vomiter.spidersonceiling.SpidersOnCeiling;
 import com.vomiter.spidersonceiling.common.SpidersOnCeilingUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -52,6 +51,7 @@ public class SpiderAttackOnCeilingGoal extends Goal {
     public void stop() {
         failureCount = 0;
         repathCooldown = 5;
+        ((ISpiderStateDuck)spider).soc$setState(SpiderState.FALL);
     }
 
 

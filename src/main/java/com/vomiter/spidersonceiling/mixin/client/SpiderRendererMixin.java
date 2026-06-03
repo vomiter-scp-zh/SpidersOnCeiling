@@ -2,11 +2,9 @@ package com.vomiter.spidersonceiling.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.vomiter.spidersonceiling.SpidersOnCeiling;
 import com.vomiter.spidersonceiling.common.SpidersOnCeilingUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.SpiderRenderer;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.Spider;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,12 +28,12 @@ public abstract class SpiderRendererMixin {
             int packedLight,
             CallbackInfo ci
     ) {
-        if(mob instanceof Spider spider && SpidersOnCeilingUtils.isCeilingMode(spider)) {
+        if(mob instanceof Spider spider && SpidersOnCeilingUtils.canChangeToCeilingMode(spider)) {
             poseStack.translate(0.0D, spider.getBbHeight(), 0.0D);
             poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
         }
 
-        if(mob.getVehicle() instanceof Spider vehicleSpider && SpidersOnCeilingUtils.isCeilingMode(vehicleSpider)){
+        if(mob.getVehicle() instanceof Spider vehicleSpider && SpidersOnCeilingUtils.canChangeToCeilingMode(vehicleSpider)){
             poseStack.translate(0.0D, mob.getBbHeight() + vehicleSpider.getBbHeight() * 0.5, 0.0D);
             poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
         }

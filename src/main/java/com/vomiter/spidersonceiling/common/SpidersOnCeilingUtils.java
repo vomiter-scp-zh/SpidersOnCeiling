@@ -1,6 +1,8 @@
 package com.vomiter.spidersonceiling.common;
 
 import com.vomiter.spidersonceiling.SpidersOnCeiling;
+import com.vomiter.spidersonceiling.common.entity.ai.ISpiderStateDuck;
+import com.vomiter.spidersonceiling.common.entity.ai.SpiderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.PathfinderMob;
@@ -10,11 +12,18 @@ public class SpidersOnCeilingUtils {
 
     private static final double EPS = 0.3D;
 
-    public static boolean isCeilingMode(PathfinderMob spider) {
-        return isCeilingMode(spider, false);
+    public static boolean isCeilingMode(PathfinderMob spider){
+        if (spider instanceof ISpiderStateDuck d){
+            return d.soc$getState().equals(SpiderState.CEILING);
+        }
+        return false;
     }
 
-    public static boolean isCeilingMode(PathfinderMob spider, boolean log) {
+    public static boolean canChangeToCeilingMode(PathfinderMob spider) {
+        return canChangeToCeilingMode(spider, false);
+    }
+
+    public static boolean canChangeToCeilingMode(PathfinderMob spider, boolean log) {
         var level = spider.level();
         AABB box = spider.getBoundingBox();
 
